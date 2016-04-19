@@ -52,6 +52,7 @@ describe('State constructor function', function() {
   });
 
   it('should invoke the given function in the context of the new state when given as the second argument', function() {
+    //
     var context = null, f = function() { context = this; }, s;
     s = new State('x', f);
     expect(context).toBe(s);
@@ -331,6 +332,7 @@ describe('State#goto', function() {
   });
 
   it('should throw an exception when multiple pivot states are found between the receiver and the given destination paths', function() {
+    // TODO: try to understand this pivot
     expect(function() {
       c.goto('/a/b/d', '/a/e/f');
     }).toThrow(new Error("State#goto: multiple pivot states found between state " + c.toString() + " and paths /a/b/d, /a/e/f"));
@@ -980,4 +982,3 @@ describe('Subclass of State', function() {
 });
 
 }());
-

@@ -40,6 +40,11 @@ describe('RoutableState', function() {
   });
 
   describe('#route', function() {
+    // e.g. two states stating
+    //    state1 ->
+    //      this.route('/abc')
+    //    state2 ->
+    //      this.route('/abc')
     it('throws an exception when a route has already been defined on the state', function() {
       var state = this.statechart.resolve('/index');
       expect(function() {
@@ -76,6 +81,8 @@ describe('RoutableState', function() {
     });
   });
 
+  // NOTE: {pending route} is just a route that isn't yet attached to a root State.
+  //    which defers the {router.define()} to be called after being attached
   describe('RoutableState#didAttach', function() {
     it('registers the pending route with the router', function() {
       var s = RoutableState.define(), a;
@@ -173,6 +180,7 @@ describe('RoutableState', function() {
     });
   });
 
+  // side effect might include changing {window.history} @.@
   describe('upon entering a state with a defined route', function() {
     it('updates the current location', function() {
       this.statechart.goto('/show', {context: {id: 9}});
@@ -185,11 +193,12 @@ describe('RoutableState', function() {
     });
   });
 
-  describe('upon state exit', function() {
+  fdescribe('upon state exit', function() {
     it("clears the route params from the router's params", function() {
       this.statechart.goto('/show', {context: {id: 3}});
       expect(router.params()).toEqual({id: 3});
       this.statechart.goto('/index');
+      // NOTE: RoutableState#_registerRoute's exitHandler
       expect(router.params()).toEqual({});
     });
   });

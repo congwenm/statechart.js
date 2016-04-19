@@ -146,6 +146,7 @@ describe('Router', function() {
         expect(this.foosSpy).toHaveBeenCalledWith({id: '456', a: '1', b: '2'});
       });
 
+      // {url route params} overpowers {context params}
       it('does not allow search params to clobber named params', function() {
         router._handleLocationChange('/foos/456', {a: '1', b: '2', id: '789'});
         expect(this.foosSpy).toHaveBeenCalledWith({id: '456', a: '1', b: '2'});
@@ -182,6 +183,8 @@ describe('Router', function() {
     });
 
     describe('upon a popstate event', function() {
+
+      // NOTE: the splat *pattern is read into individual {route} as params
       it('invokes the callback for the matched route and passes the extracted params object', function() {
         router._handleLocationChange('/file/some/long/path/thing', {});
         expect(this.fileSpy).toHaveBeenCalledWith({path: 'some/long/path/thing'});
@@ -223,9 +226,12 @@ describe('Router', function() {
       router.unknown(this.unknownSpy = jasmine.createSpy());
     });
 
+    // TODO: read rest of these tests after finishing router.js
+
     describe('#route', function() {
       it('invokes pushState with the generated url when given a route object', function() {
         router.route(this.indexRoute);
+        // #route pushes a flush into the bottom of the stack via setTimeout(), this manually calls it
         router.flush();
         expect(this.window.history.pushState).toHaveBeenCalledWith({}, null, '/foos');
       });
