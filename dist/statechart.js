@@ -2,7 +2,7 @@
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define(factory);
+		define([], factory);
 	else if(typeof exports === 'object')
 		exports["statechart"] = factory();
 	else
@@ -63,7 +63,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	(function() {
 	  "use strict";
@@ -900,7 +900,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	(function() {
 	  "use strict";
 
-	  var State = __webpack_require__(1), router = __webpack_require__(3), util = __webpack_require__(4);
+	  var State = __webpack_require__(1), router = __webpack_require__(3), util = __webpack_require__(10);
 
 	  // Public: Provides a `State` subclass that integrates seemlessly with the `Router` singleton.
 	  // `RoutableState` instances have methods for defining routes that map to that particular state.
@@ -986,7 +986,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _this = this;
 
 	    this.__route__ = router.define(pattern, function(params) {
-	      _this.root().goto(_this.path(), {force: true, context: params});
+	      return _this.root().goto(_this.path(), {force: true, context: params});
 	    });
 
 	    if (opts.default) {
@@ -1089,11 +1089,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // Polyfill for older browsers that don't support the history API that falls back to using the
 	  // URL hash.
-	  __webpack_require__(7);
+	  __webpack_require__(4);
 
-	  var qs               = __webpack_require__(5),
-	      equals           = __webpack_require__(6),
-	      util             = __webpack_require__(4),
+	  var qs               = __webpack_require__(6),
+	      equals           = __webpack_require__(9),
+	      util             = __webpack_require__(10),
 	      escapeRegex      = /[\-{}\[\]+?.,\\\^$|#\s]/g,
 	      namedParam       = /:(\w+)/g,
 	      splatParam       = /\*(\w+)/g,
@@ -1487,132 +1487,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	(function() {
-	  "use strict";
-
-	  var slice = Array.prototype.slice;
-
-	  exports.assign = function assign(target) {
-	    var sources = slice.call(arguments).slice(1), i, n, k;
-
-	    for (i = 0, n = sources.length; i < n; i++) {
-	      for (k in sources[i]) {
-	        if (sources[i][k] === void 0 || sources[i][k] === null || sources[i][k] === false) {
-	          delete target[k];
-	        }
-	        else {
-	          target[k] = sources[i][k];
-	        }
-	      }
-	    }
-
-	    return target;
-	  };
-
-	  exports.pick = function pick(o, keys) {
-	    return keys.reduce(function(acc, k) {
-	      acc[k] = o[k];
-	      return acc;
-	    }, {});
-	  };
-
-	}());
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.decode = exports.parse = __webpack_require__(8);
-	exports.encode = exports.stringify = __webpack_require__(9);
-
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = shallow
-
-	function shallow(a, b, compare) {
-	  var aIsArray = Array.isArray(a)
-	  var bIsArray = Array.isArray(b)
-
-	  if (aIsArray !== bIsArray) return false
-
-	  var aTypeof = typeof a
-	  var bTypeof = typeof b
-
-	  if (aTypeof !== bTypeof) return false
-	  if (flat(aTypeof)) return compare
-	    ? compare(a, b)
-	    : a === b
-
-	  return aIsArray
-	    ? shallowArray(a, b, compare)
-	    : shallowObject(a, b, compare)
-	}
-
-	function shallowArray(a, b, compare) {
-	  var l = a.length
-	  if (l !== b.length) return false
-
-	  if (compare) {
-	    for (var i = 0; i < l; i++)
-	      if (!compare(a[i], b[i])) return false
-	  } else {
-	    for (var i = 0; i < l; i++) {
-	      if (a[i] !== b[i]) return false
-	    }
-	  }
-
-	  return true
-	}
-
-	function shallowObject(a, b, compare) {
-	  var ka = 0
-	  var kb = 0
-
-	  if (compare) {
-	    for (var key in a) {
-	      if (
-	        a.hasOwnProperty(key) &&
-	        !compare(a[key], b[key])
-	      ) return false
-
-	      ka++
-	    }
-	  } else {
-	    for (var key in a) {
-	      if (
-	        a.hasOwnProperty(key) &&
-	        a[key] !== b[key]
-	      ) return false
-
-	      ka++
-	    }
-	  }
-
-	  for (var key in b) {
-	    if (b.hasOwnProperty(key)) kb++
-	  }
-
-	  return ka === kb
-	}
-
-	function flat(type) {
-	  return (
-	    type !== 'function' &&
-	    type !== 'object'
-	  )
-	}
-
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/*!
 	 * History API JavaScript Library v4.2.0
 	 *
@@ -1629,9 +1503,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Update: 2014-11-06 21:35
 	 */
 	(function(factory) {
-	    if ("function" === 'function' && __webpack_require__(10)['amd']) {
+	    if ("function" === 'function' && __webpack_require__(5)['amd']) {
 	        // https://github.com/devote/HTML5-History-API/issues/57#issuecomment-43133600
-	        __webpack_require__(10)(typeof document !== "object" || document.readyState !== "loading" ? [] : "html5-history-api", factory);
+	        __webpack_require__(5)(typeof document !== "object" || document.readyState !== "loading" ? [] : "html5-history-api", factory);
 	    } else {
 	        factory();
 	    }
@@ -2674,8 +2548,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 8 */
+/* 5 */
+/***/ function(module, exports) {
+
+	module.exports = function() { throw new Error("define cannot be used indirect"); };
+
+
+/***/ },
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.decode = exports.parse = __webpack_require__(7);
+	exports.encode = exports.stringify = __webpack_require__(8);
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
 	//
@@ -2748,7 +2639,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (!hasOwnProperty(obj, k)) {
 	      obj[k] = v;
-	    } else if (isArray(obj[k])) {
+	    } else if (Array.isArray(obj[k])) {
 	      obj[k].push(v);
 	    } else {
 	      obj[k] = [obj[k], v];
@@ -2758,14 +2649,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return obj;
 	};
 
-	var isArray = Array.isArray || function (xs) {
-	  return Object.prototype.toString.call(xs) === '[object Array]';
-	};
-
 
 /***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
+/* 8 */
+/***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
 	//
@@ -2814,10 +2701,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  if (typeof obj === 'object') {
-	    return map(objectKeys(obj), function(k) {
+	    return Object.keys(obj).map(function(k) {
 	      var ks = encodeURIComponent(stringifyPrimitive(k)) + eq;
-	      if (isArray(obj[k])) {
-	        return map(obj[k], function(v) {
+	      if (Array.isArray(obj[k])) {
+	        return obj[k].map(function(v) {
 	          return ks + encodeURIComponent(stringifyPrimitive(v));
 	        }).join(sep);
 	      } else {
@@ -2832,33 +2719,121 @@ return /******/ (function(modules) { // webpackBootstrap
 	         encodeURIComponent(stringifyPrimitive(obj));
 	};
 
-	var isArray = Array.isArray || function (xs) {
-	  return Object.prototype.toString.call(xs) === '[object Array]';
-	};
 
-	function map (xs, f) {
-	  if (xs.map) return xs.map(f);
-	  var res = [];
-	  for (var i = 0; i < xs.length; i++) {
-	    res.push(f(xs[i], i));
-	  }
-	  return res;
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	module.exports = shallow
+
+	function shallow(a, b, compare) {
+	  var aIsArray = Array.isArray(a)
+	  var bIsArray = Array.isArray(b)
+
+	  if (aIsArray !== bIsArray) return false
+
+	  var aTypeof = typeof a
+	  var bTypeof = typeof b
+
+	  if (aTypeof !== bTypeof) return false
+	  if (flat(aTypeof)) return compare
+	    ? compare(a, b)
+	    : a === b
+
+	  return aIsArray
+	    ? shallowArray(a, b, compare)
+	    : shallowObject(a, b, compare)
 	}
 
-	var objectKeys = Object.keys || function (obj) {
-	  var res = [];
-	  for (var key in obj) {
-	    if (Object.prototype.hasOwnProperty.call(obj, key)) res.push(key);
+	function shallowArray(a, b, compare) {
+	  var l = a.length
+	  if (l !== b.length) return false
+
+	  if (compare) {
+	    for (var i = 0; i < l; i++)
+	      if (!compare(a[i], b[i])) return false
+	  } else {
+	    for (var i = 0; i < l; i++) {
+	      if (a[i] !== b[i]) return false
+	    }
 	  }
-	  return res;
-	};
+
+	  return true
+	}
+
+	function shallowObject(a, b, compare) {
+	  var ka = 0
+	  var kb = 0
+
+	  if (compare) {
+	    for (var key in a) {
+	      if (
+	        a.hasOwnProperty(key) &&
+	        !compare(a[key], b[key])
+	      ) return false
+
+	      ka++
+	    }
+	  } else {
+	    for (var key in a) {
+	      if (
+	        a.hasOwnProperty(key) &&
+	        a[key] !== b[key]
+	      ) return false
+
+	      ka++
+	    }
+	  }
+
+	  for (var key in b) {
+	    if (b.hasOwnProperty(key)) kb++
+	  }
+
+	  return ka === kb
+	}
+
+	function flat(type) {
+	  return (
+	    type !== 'function' &&
+	    type !== 'object'
+	  )
+	}
 
 
 /***/ },
 /* 10 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	module.exports = function() { throw new Error("define cannot be used indirect"); };
+	(function() {
+	  "use strict";
+
+	  var slice = Array.prototype.slice;
+
+	  exports.assign = function assign(target) {
+	    var sources = slice.call(arguments).slice(1), i, n, k;
+
+	    for (i = 0, n = sources.length; i < n; i++) {
+	      for (k in sources[i]) {
+	        if (sources[i][k] === void 0 || sources[i][k] === null || sources[i][k] === false) {
+	          delete target[k];
+	        }
+	        else {
+	          target[k] = sources[i][k];
+	        }
+	      }
+	    }
+
+	    return target;
+	  };
+
+	  exports.pick = function pick(o, keys) {
+	    return keys.reduce(function(acc, k) {
+	      acc[k] = o[k];
+	      return acc;
+	    }, {});
+	  };
+
+	}());
 
 
 /***/ }

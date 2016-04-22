@@ -19,12 +19,37 @@ More information on statecharts is available here:
 * http://www.wisdom.weizmann.ac.il/~harel/papers/Statecharts.History.pdf
 * http://www.amazon.com/Constructing-User-Interface-Statecharts-Horrocks/dp/0201342782
 
+## Installation
+
+```
+npm install --save statechartjs
+```
+
+## Usage
+
+```javascript
+var State = require('statechartjs').State;
+
+var app = State.define(function() {
+  this.state('a', function() {
+    this.enter(function() {
+    });
+  });
+
+  this.state('b', function() {
+    this.enter(function() {
+    });
+  });
+});
+
+```
+
 ## Examples
 
 ### Lockable Door
 
 ```javascript
-var State = (typeof require === 'function' ? require('statechart') : window.statechart).State;
+var State = require('statechartjs').State;
 
 var door = State.define(function() {
   this.state('closed', function() {
@@ -63,7 +88,7 @@ door.current();          // => [ '/closed/locked' ]
 ### Shallow History State
 
 ```javascript
-var State = (typeof require === 'function' ? require('statechart') : window.statechart).State;
+var State = require('statechartjs').State;
 
 var sc = State.define(function() {
   // State /a is marked as a history state, so any time /a is entered without
@@ -95,7 +120,7 @@ sc.current(); // => ['/a/a.2']
 ### Deep History State
 
 ```javascript
-var State = (typeof require === 'function' ? require('statechart') : window.statechart).State;
+var State = require('statechartjs').State;
 
 var sc = State.define(function() {
   // State /a has shallow history tracking.
@@ -146,7 +171,7 @@ sc.current();  // => ['/b/b.2/b.2.3']
 ### State Concurrency
 
 ```javascript
-var State = (typeof require === 'function' ? require('statechart') : window.statechart).State;
+var State = require('statechartjs').State;
 
 var word = State.define({concurrent: true}, function() {
   this.state('bold', function() {
