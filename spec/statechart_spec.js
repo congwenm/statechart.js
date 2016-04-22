@@ -980,4 +980,3 @@ describe('Subclass of State', function() {
 });
 
 }());
-
