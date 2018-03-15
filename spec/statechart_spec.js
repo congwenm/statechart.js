@@ -62,6 +62,11 @@ describe('State constructor function', function() {
     s = new State('x', {H: true}, f);
     expect(context).toBe(s);
   });
+
+  it('should push the state onto `instances` via setting `track` to `true`', function() {
+    var s = new State('a', { track: true });
+    expect(State.instances).toEqual([s])
+  });
 });
 
 describe('State#addSubstate', function() {
